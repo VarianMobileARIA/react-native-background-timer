@@ -2,12 +2,50 @@
 Emit event periodically (even when app is in the background).
 
 ## Installation
-- `npm i react-native-background-timer --save`
+
+:warning: If you use [create-react-native-app](https://github.com/react-community/create-react-native-app) you must [eject](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md) it before running `react-native link`.
+
+- `yarn add react-native-background-timer`
 - `react-native link`
 
 ### Installation using CocoaPods on iOS
-- `npm i react-native-background-timer --save`
+- `yarn add react-native-background-timer`
 - add the following to your Podfile: `pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'`
+
+### Manual linking on Android
+
+Apply these changes to your project if `react-native link react-native-background-timer` failed:
+
+**`android/settings.gradle`:**
+
+```
+include ':react-native-background-timer'
+project(':react-native-background-timer').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-background-timer/android')
+```
+
+**`android/app/src/main/java/com/yourproject/MainApplication.java`:**
+
+On top, where imports are:
+```
+import com.ocetnik.timer.BackgroundTimerPackage;
+```
+Add BackgroundTimerPackage() to the list of exported packages:
+```
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+            ...
+            new BackgroundTimerPackage()
+      );
+    }
+```
+**`android/app/build.gradle`:**
+```
+dependencies {
+    ...
+    implementation project(':react-native-background-timer')
+}
+```
 
 ## Usage Crossplatform
 To use the same code both on Android and iOS use runBackgroundTimer() and stopBackgroundTimer(). There can be used only one background timer to keep code consistent.
